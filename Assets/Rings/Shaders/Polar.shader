@@ -7,8 +7,11 @@
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags {"Queue"="Transparent" "RenderType"="Transparent" }
         LOD 100
+
+        ZWrite Off
+        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
@@ -47,7 +50,7 @@
                 
                 float4 worldPos = mul(UNITY_MATRIX_M, float4(v.vertex.xyz, 1.0));
                 float angle = worldPos.x * PI * 2 * _PolarBlend;
-                worldPos.xy = worldPos.xy * (1 - _PolarBlend) + float2(sin(angle), cos(angle)) * (worldPos.y * _PolarBlend);
+                worldPos.xy = float2(worldPos.x, 0) * (1 - _PolarBlend) + float2(sin(angle), cos(angle)) * worldPos.y ;
                 o.vertex = mul(UNITY_MATRIX_VP, worldPos);
                 
                 return o;
@@ -56,7 +59,8 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 UNITY_SETUP_INSTANCE_ID(i);
-                return UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
+                float4 color = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
+                return float4(color.xyz, 1);
             }
             ENDCG
         }

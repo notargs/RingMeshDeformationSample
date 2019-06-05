@@ -1,2 +1,2 @@
 # RingSample
-![capture](https://user-images.githubusercontent.com/3889597/58800453-d457d400-8642-11e9-85ef-9b54e77f3c70.gif)
+![capture (11)](https://user-images.githubusercontent.com/3889597/58942510-dfcd0b80-87b8-11e9-828e-6999903d53c4.gif)

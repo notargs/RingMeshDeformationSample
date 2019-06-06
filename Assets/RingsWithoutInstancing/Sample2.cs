@@ -17,7 +17,9 @@ namespace RingsWithoutInstancing
         private void Start()
         {
             _mesh = new Mesh {subMeshCount = 2};
+            _mesh.MarkDynamic();
             _meshFilter = GetComponent<MeshFilter>();
+            _meshFilter.sharedMesh = _mesh;
         }
 
         private void Update()
@@ -33,9 +35,10 @@ namespace RingsWithoutInstancing
                 for (var x = 0; x < count; ++x)
                 {
                     var id = x + y;
-                    var surface = Mathf.Sin(id + Time.time) * 0.5f + 0.5f;
-                    var surfaceColor = new Color(surface, surface, surface);
-                    AddBox(surfaceColor, Color.blue, Matrix4x4.TRS(new Vector3(x, y, 0) / count, Quaternion.identity, Vector3.one * 0.1f));
+                    var color = Mathf.Sin(id + Time.time) * 0.5f + 0.5f;
+                    var surfaceColor = new Color(color, color, color);
+                    var edgeColor = new Color(1 - color, 1 - color, 1 - color);
+                    AddBox(surfaceColor, edgeColor, Matrix4x4.TRS(new Vector3(x, y, 0) / count, Quaternion.identity, Vector3.one * 0.1f));
                 }
             }
             
@@ -43,8 +46,6 @@ namespace RingsWithoutInstancing
             _mesh.SetColors(_colors);
             _mesh.SetIndices(_triangles.ToArray(), MeshTopology.Triangles, 0);
             _mesh.SetIndices(_lines.ToArray(), MeshTopology.Lines, 1);
-            
-            _meshFilter.mesh = _mesh;
         }
 
         private static Vector3 ToPolarCoordinate(Vector3 position)
